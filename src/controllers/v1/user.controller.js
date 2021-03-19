@@ -1,6 +1,5 @@
 import httpStatus from 'http-status'
 import createError from 'http-errors'
-
 import UserRepo from '../../repositories/user.repository'
 
 const get = async (req, res, next) => {
@@ -17,13 +16,11 @@ const get = async (req, res, next) => {
         .status(httpStatus.OK)
         .json(user.toWeb())
     } else {
-      console.log('= = => controller get all')
       const users = await userRepo.all()
 
       return res.json(users.map(user => user.toWeb()))
     }
   } catch (e) {
-    //console.log('= = => error...')
     next(e)
   }
 }

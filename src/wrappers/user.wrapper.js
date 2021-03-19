@@ -2,10 +2,9 @@ import Wrapper from './index'
 
 class UserWrapper extends Wrapper {
   toWeb() {
-    console.log (`to web UserWrapper`)
     const value = Object.assign({}, this)
 
-    delete values.password
+    delete value.password
 
     return values
   }

@@ -14,7 +14,6 @@ class UserRepo {
   }
 
   async all() {
-    console.log(`= = => repository all:`)
     const users = await models.User.findAll()
     return users.map(user => UserWrapper.create(user))
   }
@@ -50,7 +49,7 @@ class UserRepo {
     if (!user) {
       user = await models.User.findOne({
         where: {
-          email,
+          email
         }
       })
     }

@@ -1,4 +1,3 @@
-import httpStatus from 'http-status'
 import createError from 'http-errors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -27,7 +26,7 @@ const login = async (req, res, next) => {
 
     // jwt payload 에 담길 내용
     const payload = {
-      message: 'access granted',
+      email: user.email,
       uuid: user.uuid,
     }
 
@@ -41,6 +40,15 @@ const login = async (req, res, next) => {
   }
 }
 
+const tokenTest = async (req, res, next) => {
+  try {
+    return response(res, req.user)
+  } catch (e) {
+    next(e)
+  }
+}
+
 export {
-  login
+  login,
+  tokenTest
 }
