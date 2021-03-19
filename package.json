@@ -5,8 +5,7 @@
   "scripts": {
     "start": "nodemon ./src/bin/www --exec babel-node --presets @babel/preset-env",
     "start2": "node ./src/bin/www",
-    "test": "jest",
-    "test:db": "NODE_ENV=test npm run migrate:reset && NODE_ENV=test npm run migrate && NODE_ENV=test ./node_modules/.bin/jest ./src/__tests__ --coverage",
+    "test": "NODE_ENV=test npm run migrate:reset && NODE_ENV=test npm run migrate && NODE_ENV=test ./node_modules/.bin/jest ./src/__tests__ --coverage",
     "migrate": "sequelize db:migrate",
     "migrate:reset": "sequelize db:migrate:undo:all"
   },
@@ -23,12 +22,13 @@
     "jsonwebtoken": "^8.5.1",
     "mariadb": "^2.5.3",
     "moment": "^2.29.1",
-    "morgan": "~1.9.1",
+    "morgan": "^1.9.1",
     "mysql2": "^2.2.5",
     "pug": "^3.0.2",
     "redis": "^3.0.2",
     "sequelize": "^6.5.1",
-    "uuid4": "^2.0.2"
+    "uuid4": "^2.0.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.0",

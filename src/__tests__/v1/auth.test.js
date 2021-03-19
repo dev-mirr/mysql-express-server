@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 import request from 'supertest'
 import randomString from 'random-string'
 import jwt from 'jsonwebtoken'
@@ -7,12 +9,15 @@ import UserRepo from '../../repositories/user.repository'
 
 const app = require('../../app')
 
-let userRepo = new UserRepo()
+let userRepo
+
+beforeAll(() => {
+  userRepo = new UserRepo()
+})
 
 afterAll(() => models.sequelize.close())
 
 describe('로그인 테스트', () => {
-
   let userData
   let token
 
@@ -34,8 +39,6 @@ describe('로그인 테스트', () => {
         password: userData.password
       })
 
-    //console.log(response.body.data.token)
-
     expect(response.statusCode).toBe(200)
     expect(response.body.data.token).toBeTruthy()
 
@@ -46,16 +49,6 @@ describe('로그인 테스트', () => {
     expect(userData.email).toBe(user.email)
 
     token = response.body.data.token
-    console.log(`= = => response data: ${JSON.stringify(response.body)}`)
-  })
-
-  // 희한하게 jwt.middleware가 안되네...
-  test('token으로 사용자 조회. | 200', async () => {
-    let response = await request(app)
-      .get('v1/auth/token-test')
-      .set('Authorization', `Bearer ${token}`)
-
-    expect(response.body.data.email).toBe(userData.email)
   })
 
   test('없는 사용자로 로그인. | 404', async () => {
@@ -67,8 +60,7 @@ describe('로그인 테스트', () => {
       })
 
     expect(response.statusCode).toBe(404)
-//    expect(response.body.data.message)
-//      .toBe('사용자를 찾을 수 없습니다.')
+    expect(response.body.data.message).toBe('사용자를 찾을 수 없습니다.')
   })
 
   test('잘못된 비밀번호로 로그인. | 404', async () => {
@@ -80,7 +72,14 @@ describe('로그인 테스트', () => {
       })
 
     expect(response.statusCode).toBe(422)
-//    expect(response.body.data.message)
-//      .toBe('비밀번호를 확인 해주세요.')
+    expect(response.body.data.message).toBe('비밀번호를 확인 해주세요.')
+  })
+
+  test('token 으로 사용자 조회. | 200', async () => {
+    let response = await request(app)
+      .get('/v1/auth/tokenTest')
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.body.data.email).toBe(userData.email)
   })
 })

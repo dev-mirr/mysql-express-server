@@ -34,7 +34,6 @@ describe('GET: /v1/users', () => {
     let response = await request(app)
       .get(`/v1/users`)
 
-    console.log(`= = => response: ${JSON.stringify(response.body)}`)
     expect(response.body.length).toBeGreaterThan(1)
   })
 
