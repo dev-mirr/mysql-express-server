@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import {
   uuid
 } from '../utils/uuid'
-import userCache from '../caches/user.cache'
+import UserCache from '../caches/user.cache'
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -39,22 +39,6 @@ module.exports = (sequelize, DataTypes) => {
     // associations
   }
 
-  // print
-  User.prototype.toWeb = function () {
-    /* 이거 안됨; */
-    //const values = Object.assign({}, this)
-
-    //delete values.dataValues.id
-    //delete values.dataValues.password
-
-    return {
-      name: this.name,
-      email: this.email,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-    }
-  }
-
   // hooks
   // bcrypt bcrypt 로 단방향 암호화 가능한 암호 생성 로직
   User.beforeSave(async (user, options) => {
@@ -64,7 +48,29 @@ module.exports = (sequelize, DataTypes) => {
     }
   })
 
-  User.afterSave((user, options) => userCache.store(user))
+  // 생성 후 캐시에 저장
+  User.afterSave(async (user, options) => {
+    const userCache = new UserCache()
+    await userCache.store(user)
+  })
+
+  // print
+  User.prototype.toWeb = function () {
+    /* 이거 안됨; */
+    //const values = Object.assign({}, this.get())
+
+    //delete values.dataValues.id
+    //delete values.dataValues.password
+
+    //return values
+
+    return {
+      name: this.name,
+      email: this.email,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    }
+  }
 
   return User
 }

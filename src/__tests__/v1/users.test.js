@@ -1,22 +1,26 @@
 import request from 'supertest'
 import randomString from 'random-string'
+import models from '../../models'
+import UserRepo from '../../repositories/user.repository'
 import {
   uuid
 } from '../../utils/uuid'
-import models from '../../models'
 
 const app = require('../../app')
 
+let userRepo
 let user
 
 beforeAll(async () => {
+
+  userRepo = new UserRepo()
   // 사용자 2명 생성
-  await models.User.create({
+  await userRepo.store({
     email: randomString() + '@test.com',
     password: randomString()
   })
 
-  user = await models.User.create({
+  user = await userRepo.store({
     email: randomString() + '@test.com',
     password: randomString()
   })
@@ -30,23 +34,21 @@ describe('GET: /v1/users', () => {
     let response = await request(app)
       .get(`/v1/users`)
 
-    expect(response.body.length)
-      .toBeGreaterThan(1)
+    console.log(`= = => response: ${JSON.stringify(response.body)}`)
+    expect(response.body.length).toBeGreaterThan(1)
   })
 
   test('uuid 로 사용자 조회. | 200', async () => {
     let response = await request(app)
       .get(`/v1/users/${user.uuid}`)
 
-    expect(response.body.email)
-      .toBe(user.email)
+    expect(response.body.email).toBe(user.email)
   })
 
   test('잘못된 uuid 로 사용자 조회. | 404', async () => {
     let response = await request(app)
       .get(`/v1/users/${uuid()}`)
-
-    expect(response.statusCode)
-      .toBe(404)
+      
+    expect(response.statusCode).toBe(404)
   })
 })

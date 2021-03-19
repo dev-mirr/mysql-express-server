@@ -11,7 +11,7 @@ router.route('/login')
   )
 
 // 테스트용
-router.route('/tokenTest')
+router.route('/token-test')
   .get(
     tokenTest
   )

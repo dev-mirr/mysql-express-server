@@ -3,9 +3,11 @@ import randomString from 'random-string'
 import jwt from 'jsonwebtoken'
 
 import models from '../../models'
-import userRepo from '../../repositories/user.repository'
+import UserRepo from '../../repositories/user.repository'
 
 const app = require('../../app')
+
+let userRepo = new UserRepo()
 
 afterAll(() => models.sequelize.close())
 
@@ -50,7 +52,7 @@ describe('로그인 테스트', () => {
   // 희한하게 jwt.middleware가 안되네...
   test('token으로 사용자 조회. | 200', async () => {
     let response = await request(app)
-      .get('v1/auth/tokenTest')
+      .get('v1/auth/token-test')
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.body.data.email).toBe(userData.email)
