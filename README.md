@@ -1,7 +1,7 @@
 개발 환경
 - nodejs: 14.15.4
 - npm: 6.14.10
-- db: mysql, docker
+- db: mysql/docker
 - orm: sequelize
 
 # 설치 방법은 readmes 폴더를 참조하세요
@@ -25,9 +25,7 @@ DB_DEV=post_server_dev    # dev 데이터베이스
 DB_TEST=post_server_test  # test 데이터베이스
 ```
 
-학습해보자! 11 차례 (https://medium.com/aha-official/%EC%95%84%ED%95%98-rest-api-%EC%84%9C%EB%B2%84-%EA%B0%9C%EB%B0%9C-9-d75f4eab80d5)
-
-#### 설치 환경
+#### 설치 환경 설명
 - express: node.js의 http와 connect 컴포넌트를 기반으로 하는 웹 프레임워크
 - docker: 하나의 공간에 프로그램이 실행되는데 필요한 라이브러리, 모듈등을 모두 설치한 가상머신
 그 공간을 컨테이너라고 함
@@ -46,5 +44,5 @@ DB_TEST=post_server_test  # test 데이터베이스
 - logs 디렉토리에 저장됨
 
 
-#### 개발에 큰 도움이 된 사이트
+#### 개발에 도움이 된 사이트
 https://medium.com/aha-official/tagged/development (아하 REST API 서버 개발)
